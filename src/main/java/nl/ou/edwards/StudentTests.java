@@ -15,12 +15,15 @@ public class StudentTests {
       return;
     }
     
+    // Initialize configuration.
     Config config = Config.getInstance();
     config.setDataDirectory(args[0]);
     config.setTestDirectory(args[1]);
     
+    // Setup Actor system.
     ActorSystem system = ActorSystem.create("studenttests");
     
+    // Load actors.
     system.actorOf(Props.create(ReadImplementations.class), "ReadImplementations");
     system.actorOf(Props.create(CountLoc.class), "CountLoc");
     system.actorOf(Props.create(ExtractTestMethods.class), "ExtractTestMethods");
@@ -32,11 +35,10 @@ public class StudentTests {
     system.actorOf(Props.create(CalculateBrc.class), "CalculateBrc");
     system.actorOf(Props.create(SearchSimilarMethods.class), "SearchSimilarMethods");
     system.actorOf(Props.create(WriteExcelSheet.class), "WriteExcelSheet");
-    
     system.actorOf(Props.create(RunTest.class), "RunTest");
     
+    // Start flow by sending message to Main actor.
     ActorRef main = system.actorOf(Props.create(Main.class), "Main");
-    
     main.tell(config.getDataDirectory(), ActorRef.noSender());
   }
 }

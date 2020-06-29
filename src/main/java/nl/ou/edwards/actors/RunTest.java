@@ -19,54 +19,93 @@ import nl.ou.edwards.Method;
  */
 public class RunTest<A> extends AbstractActor {
   
+  /**
+   * Input definitions for RunTest actor.
+   */
   public static final class Input<A> {
     protected String classCode;
     protected Method testMethod;
     protected Set<Method> helperMethods;
     protected A attachment;
     
+    /**
+     * Create a new Input object.
+     */
     public Input(String classCode, Method testMethod, Set<Method> helperMethods, A attachment) {
       this.classCode = classCode;
       this.testMethod = testMethod;
       this.helperMethods = helperMethods;
       this.attachment = attachment;
     }
-    
+
+    /**
+     * Get code for class implementation.
+     */
     public String getClassCode() {
       return classCode;
     }
-    
+
+    /**
+     * Get test method.
+     */
     public Method getTestMethod() {
       return testMethod;
     }
     
+    /**
+     * Get helper methods.
+     * 
+     * Helper methods are required to run the test methods.
+     */
     public Set<Method> getHelperMethods() {
       return helperMethods;
     }
-    
+
+    /**
+     * Get attachment.
+     * 
+     * Calling actors can use an attachment to carry information they need after they get the results back.
+     */
     public A getAttachment() {
       return attachment;
     }
   }
   
+  /**
+   * Output definitions for RunTest actor.
+   */
   public static final class Output<A> {
     protected boolean passed;
     protected A attachment;
     
+    /**
+     * Create a new Output object.
+     */
     public Output(boolean passed, A attachment) {
       this.passed = passed;
       this.attachment = attachment;
     }
-    
+
+    /**
+     * Get test result.
+     * 
+     * Returns true if the test passed, false otherwise.
+     */
     public boolean getPassed() {
       return passed;
     }
     
+    /**
+     * Get attachment.
+     */
     public A getAttachment() {
       return attachment;
     }
   }
   
+  /**
+   * Read all data from a stream into a string.
+   */
   private String readStream(InputStream is) {
     String out = "";
     try {
@@ -82,6 +121,9 @@ public class RunTest<A> extends AbstractActor {
     return out;
   }
   
+  /**
+   * Run command and return output.
+   */
   private String run(String command) {
     String output = "";
     try {

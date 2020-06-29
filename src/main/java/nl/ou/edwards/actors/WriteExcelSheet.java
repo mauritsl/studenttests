@@ -29,8 +29,10 @@ public class WriteExcelSheet extends AbstractActor {
           String testDir = Config.getInstance().getTestDirectory();
           String filename = testDir + "/results.xlsx";
           
+          // Create a new Excel file.
           Workbook workbook = new XSSFWorkbook();
 
+          // Add matrixes.
           if (input.getFullMatrix() == null) {
             addMatrix(workbook, "Matrix", input.getMatrix());
           } else {
@@ -38,22 +40,27 @@ public class WriteExcelSheet extends AbstractActor {
             addMatrix(workbook, "Full matrix", input.getFullMatrix());
           }
           
+          // Add implementation and method sheets.
           addImplementations(workbook, "Implementations", input);
           addMethods(workbook, "Unique methods", input.getMatrix().getTestMethods());
           
+          // Write Excel file to disk.
           FileOutputStream fileOut = new FileOutputStream(filename);
           workbook.write(fileOut);
           fileOut.close();
-
           workbook.close();
-          
           System.out.println("Written to " + filename);
+          
+          // Notify sender that we're done.
           getSender().tell(new Output(), getSelf());
         }
       )
       .build();
   }
   
+  /**
+   * Write Matrix to Excel sheet.
+   */
   private void addMatrix(Workbook workbook, String sheetName, Matrix matrix) {
     Sheet sheet = workbook.createSheet(sheetName);
     sheet.createFreezePane(3, 1);
@@ -87,6 +94,9 @@ public class WriteExcelSheet extends AbstractActor {
     }
   }
   
+  /**
+   * List implementations in Excel sheet.
+   */
   private void addImplementations(Workbook workbook, String sheetName, Results results) {
     Sheet sheet = workbook.createSheet(sheetName);
     sheet.createFreezePane(1, 1);
@@ -113,6 +123,9 @@ public class WriteExcelSheet extends AbstractActor {
     
   }
   
+  /**
+   * List methods in Excel sheet.
+   */
   private void addMethods(Workbook workbook, String sheetName, List<Method> methods) {
     Sheet sheet = workbook.createSheet(sheetName);
     sheet.createFreezePane(3, 1);

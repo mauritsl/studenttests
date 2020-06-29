@@ -23,18 +23,21 @@ public class BuildMatrix extends AbstractActor {
           Output output = new Output();
           output.copyFrom(input);
           
+          // Loop through all implementations.
           List<Implementation> implementations = new LinkedList<Implementation>();
           List<Method> methods = new LinkedList<Method>();
           input.getImplementationNames().forEach(name -> {
             Implementation impl = input.getImplementation(name);
             implementations.add(impl);
+            
+            // For each implementation, loop though its test methods.
             impl.getTestMethods().forEach(method -> {
               methods.add(method);
             });
           });
           
+          // Construct the matrix and attach it to the results.
           Matrix matrix = new Matrix(implementations, methods);
-          
           output.setMatrix(matrix);
           
           getSender().tell(output, getSelf());

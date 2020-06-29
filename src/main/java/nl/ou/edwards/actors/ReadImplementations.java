@@ -38,10 +38,14 @@ public class ReadImplementations extends AbstractActor {
         Input.class,
         input -> {
           Results results = new Output();
+          
+          // Read subfolders in submissions folder.
           File folder = new File(input.getDirectory());
           for (File submission : folder.listFiles()) {
             String submissionName = submission.getName();
             if (submission.isDirectory()) {
+              
+              // Look for class implementation and test suite.
               File classFile = null;
               File testFile = null;
               for (File submissionFile : submission.listFiles()) {
@@ -55,6 +59,8 @@ public class ReadImplementations extends AbstractActor {
                    }
                 }
               }
+              
+              // If both found, read implementation files and add to our results.
               if (testFile != null && classFile != null) {
                 byte[] classCode = Files.readAllBytes(Paths.get(classFile.getPath()));
                 byte[] testCode = Files.readAllBytes(Paths.get(testFile.getPath()));

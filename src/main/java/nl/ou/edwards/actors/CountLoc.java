@@ -21,6 +21,7 @@ public class CountLoc extends AbstractActor {
           Output output = new Output();
           output.copyFrom(input);
           
+          // For each implementation, set the LOC (lines of code) in the results.
           output.getImplementationNames().forEach(name -> {
             Implementation impl = output.getImplementation(name);
             impl.setClassLoc(getLoc(impl.getClassCode()));

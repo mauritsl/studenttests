@@ -21,9 +21,11 @@ public class DeduplicateMatrix extends AbstractActor {
           Output output = new Output();
           output.copyFrom(input);
           
+          // Deduplicate matrix using the Matrix.deduplicate method.
           Matrix full = output.getMatrix();
           Matrix deduplicatedMatrix = full.deduplicate();
           
+          // Attach to our results.
           output.setFullMatrix(full);
           output.setMatrix(deduplicatedMatrix);
           
